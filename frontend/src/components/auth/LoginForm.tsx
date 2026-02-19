@@ -12,7 +12,6 @@ import { loginSchema, type LoginFormData } from '@/lib/validations';
 import { useAuthStore } from '@/stores/authStore';
 import apiClient from '@/lib/axios';
 import { Logo } from '@/components/common/Logo';
-import { ThemeToggle } from '@/components/common/ThemeToggle';
 import type { ApiResponse, User } from '@/types';
 
 export function LoginForm() {
@@ -45,9 +44,8 @@ export function LoginForm() {
   return (
     <div className="glass-card rounded-2xl p-8 space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div>
         <Logo />
-        <ThemeToggle />
       </div>
 
       <div className="space-y-1">

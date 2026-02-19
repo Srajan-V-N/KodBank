@@ -11,7 +11,6 @@ import { toast } from 'sonner';
 import { registerSchema, type RegisterFormData } from '@/lib/validations';
 import apiClient from '@/lib/axios';
 import { Logo } from '@/components/common/Logo';
-import { ThemeToggle } from '@/components/common/ThemeToggle';
 
 const fields = [
   { id: 'uid' as const, label: 'User ID', placeholder: 'unique_id_123', type: 'text', autoComplete: 'username' },
@@ -48,9 +47,8 @@ export function RegisterForm() {
   return (
     <div className="glass-card rounded-2xl p-8 space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div>
         <Logo />
-        <ThemeToggle />
       </div>
 
       <div className="space-y-1">

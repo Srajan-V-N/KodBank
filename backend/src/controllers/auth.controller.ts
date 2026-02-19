@@ -22,7 +22,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
     res.cookie('kodbank_token', token, {
       httpOnly: true,
       secure: env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 3_600_000, // 1 hour in ms
     });
 
@@ -42,7 +42,7 @@ export async function logout(req: Request, res: Response, next: NextFunction): P
     res.clearCookie('kodbank_token', {
       httpOnly: true,
       secure: env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
     });
 
     res.status(200).json(successResponse('Logged out successfully', null));

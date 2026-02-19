@@ -70,7 +70,7 @@ export function BalanceCard() {
             className="text-center py-4"
           >
             <p
-              className="text-4xl font-bold text-brand tabular-nums"
+              className="text-4xl font-bold text-[#16a34a] tabular-nums"
               style={{ fontFamily: 'var(--font-space)' }}
             >
               {formatCurrency(displayBalance)}

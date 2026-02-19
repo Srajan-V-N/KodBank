@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: kodbank-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000        # Render's default PORT; the app already reads process.env.PORT

@@ -19,7 +19,9 @@ export function WelcomeCard() {
         {user?.username ?? 'User'} 👋
       </h2>
       <p className="text-muted-foreground text-sm mt-2">
-        Welcome to your KodBank dashboard. Your finances, beautifully simple.
+        {user?.isFirstLogin
+          ? 'Welcome to KodBank'
+          : 'Welcome back'}
       </p>
     </div>
   );

@@ -13,6 +13,7 @@ interface KodUserRow {
   email: string;
   password: string;
   role: string;
+  isFirstLogin: number;
 }
 
 export async function registerUser(input: RegisterInput) {
@@ -42,7 +43,7 @@ export async function registerUser(input: RegisterInput) {
 
 export async function loginUser(input: LoginInput) {
   const [rows] = await pool.execute<mysql.RowDataPacket[]>(
-    'SELECT id,uid,username,email,password,role FROM kod_users WHERE email=? LIMIT 1',
+    'SELECT id,uid,username,email,password,role,isFirstLogin FROM kod_users WHERE email=? LIMIT 1',
     [input.email],
   );
 
@@ -51,6 +52,10 @@ export async function loginUser(input: LoginInput) {
 
   const isValid = await comparePassword(input.password, user.password);
   if (!isValid) throw new AppError('Invalid email or password', 401);
+
+  if (user.isFirstLogin === 1) {
+    await pool.execute('UPDATE kod_users SET isFirstLogin=0, updatedAt=NOW() WHERE id=?', [user.id]);
+  }
 
   const token = signToken({
     uid: user.uid,
@@ -70,7 +75,11 @@ export async function loginUser(input: LoginInput) {
 
   return {
     token,
-    user: { uid: user.uid, username: user.username, email: user.email, role: user.role },
+    user: {
+      uid: user.uid, username: user.username,
+      email: user.email, role: user.role,
+      isFirstLogin: user.isFirstLogin === 1,
+    },
   };
 }
 

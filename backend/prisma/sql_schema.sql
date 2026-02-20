@@ -11,6 +11,7 @@ CREATE TABLE `kod_users` (
   `phone`     VARCHAR(20)    NOT NULL,
   `role`      VARCHAR(20)    NOT NULL DEFAULT 'Customer',
   `balance`   DECIMAL(15,2)  NOT NULL DEFAULT 100000.00,
+  `isFirstLogin` TINYINT(1)  NOT NULL DEFAULT 1,
   `createdAt` DATETIME(3)    NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   `updatedAt` DATETIME(3)    NOT NULL,
   PRIMARY KEY (`id`),
@@ -30,3 +31,7 @@ CREATE TABLE `user_tokens` (
     FOREIGN KEY (`userId`) REFERENCES `kod_users` (`id`)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE kod_users ADD COLUMN isFirstLogin TINYINT(1) NOT NULL DEFAULT 1;
+
+UPDATE kod_users SET isFirstLogin = 0;

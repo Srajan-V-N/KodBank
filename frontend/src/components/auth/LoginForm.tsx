@@ -30,8 +30,9 @@ export function LoginForm() {
     setIsLoading(true);
     try {
       const res = await apiClient.post<ApiResponse<User>>('/auth/login', data);
+      const isFirst = res.data.data.isFirstLogin;
       setUser(res.data.data);
-      toast.success('Welcome back!');
+      toast.success(isFirst ? 'Welcome to KodBank!' : 'Welcome back!');
       router.push('/dashboard');
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };

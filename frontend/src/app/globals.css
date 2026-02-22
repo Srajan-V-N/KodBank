@@ -82,3 +82,38 @@
     box-shadow: var(--glass-shadow);
   }
 }
+
+/* Prose overrides for Promptly AI messages */
+.prose :where(p):not(:where([class~="not-prose"] *)) {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.prose :where(pre):not(:where([class~="not-prose"] *)) {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  font-size: 0.8em;
+}
+.dark .prose :where(pre):not(:where([class~="not-prose"] *)) {
+  background: rgba(0, 0, 0, 0.4);
+}
+.prose :where(code):not(:where([class~="not-prose"] *)):not(pre code) {
+  background: hsl(var(--muted));
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-weight: 400;
+}
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+  color: #feba01;
+  text-decoration: underline;
+}
+
+/* Shiki code block wrapper */
+.shiki-wrapper pre {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+}

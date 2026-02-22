@@ -11,6 +11,7 @@ const poppins = Poppins({ subsets: ['latin'], weight: '600', variable: '--font-p
 export const metadata: Metadata = {
   title: 'KodBank — Your Digital Bank',
   description: 'A modern neobank experience built for the digital age',
+  icons: { icon: '/K-logo.png' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

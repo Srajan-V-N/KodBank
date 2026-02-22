@@ -22,3 +22,13 @@ export const authRateLimiter = rateLimit({
       .json(errorResponse('Too many authentication attempts, please try again later'));
   },
 });
+
+export const aiRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (_req, res) => {
+    res.status(429).json(errorResponse('AI rate limit exceeded, please slow down'));
+  },
+});

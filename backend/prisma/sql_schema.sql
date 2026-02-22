@@ -35,3 +35,75 @@ CREATE TABLE `user_tokens` (
 ALTER TABLE kod_users ADD COLUMN isFirstLogin TINYINT(1) NOT NULL DEFAULT 1;
 
 UPDATE kod_users SET isFirstLogin = 0;
+
+CREATE TABLE `ai_conversations` (
+  `id`        VARCHAR(36)   NOT NULL,
+  `userId`    VARCHAR(36)   NOT NULL,
+  `title`     VARCHAR(255)  NOT NULL,
+  `createdAt` DATETIME(3)   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `updatedAt` DATETIME(3)   NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `ai_conversations_userId_fkey`
+    FOREIGN KEY (`userId`) REFERENCES `kod_users` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `ai_projects` (
+  `id`        VARCHAR(36)  NOT NULL,
+  `userId`    VARCHAR(36)  NOT NULL,
+  `name`      VARCHAR(100) NOT NULL,
+  `icon`      VARCHAR(50)  NOT NULL DEFAULT 'Folder',
+  `color`     VARCHAR(20)  NOT NULL DEFAULT '#feba01',
+  `createdAt` DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `ai_projects_userId_fkey`
+    FOREIGN KEY (`userId`) REFERENCES `kod_users` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `ai_conversations`
+  ADD COLUMN `projectId` VARCHAR(36) NULL,
+  ADD CONSTRAINT `ai_conversations_projectId_fkey`
+    FOREIGN KEY (`projectId`) REFERENCES `ai_projects` (`id`)
+    ON DELETE SET NULL ON UPDATE CASCADE;
+
+CREATE TABLE `ai_messages` (
+  `id`             VARCHAR(36)   NOT NULL,
+  `conversationId` VARCHAR(36)   NOT NULL,
+  `role`           VARCHAR(20)   NOT NULL,
+  `content`        TEXT          NOT NULL,
+  `fileUrl`        VARCHAR(512)  NULL,
+  `createdAt`      DATETIME(3)   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `ai_messages_conversationId_fkey`
+    FOREIGN KEY (`conversationId`) REFERENCES `ai_conversations` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- =====================================================
+-- INCREMENTAL MIGRATION (run in Aiven if upgrading)
+-- Safe to run on both fresh and existing DBs.
+-- =====================================================
+
+CREATE TABLE IF NOT EXISTS `ai_projects` (
+  `id`        VARCHAR(36)  NOT NULL,
+  `userId`    VARCHAR(36)  NOT NULL,
+  `name`      VARCHAR(100) NOT NULL,
+  `icon`      VARCHAR(50)  NOT NULL DEFAULT 'Folder',
+  `color`     VARCHAR(20)  NOT NULL DEFAULT '#feba01',
+  `createdAt` DATETIME(3)  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `ai_projects_userId_fkey`
+    FOREIGN KEY (`userId`) REFERENCES `kod_users` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Run only if column doesn't exist yet:
+ALTER TABLE `ai_conversations`
+  ADD COLUMN IF NOT EXISTS `projectId` VARCHAR(36) NULL;
+
+-- Run only if FK doesn't exist yet (skip if already applied):
+ALTER TABLE `ai_conversations`
+  ADD CONSTRAINT `ai_conversations_projectId_fkey`
+    FOREIGN KEY (`projectId`) REFERENCES `ai_projects` (`id`)
+    ON DELETE SET NULL ON UPDATE CASCADE;

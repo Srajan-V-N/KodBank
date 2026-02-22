@@ -15,7 +15,7 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('1h'),
   FRONTEND_URL: z.string().url('FRONTEND_URL must be a valid URL'),
   COOKIE_SECRET: z.string().min(16, 'COOKIE_SECRET must be at least 16 characters'),
-  AI_BASE_URL: z.string().url('AI_BASE_URL must be a valid URL'),
+  AI_BASE_URL: z.string().url('AI_BASE_URL must be a valid URL').default('https://srajan3624-promptly.hf.space'),
 });
 
 const _parsed = envSchema.safeParse(process.env);

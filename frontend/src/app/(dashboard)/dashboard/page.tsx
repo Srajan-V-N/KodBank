@@ -36,22 +36,22 @@ export default function DashboardPage() {
       </PageTransition>
 
       {/* Promptly ChatBot Button — outside PageTransition to avoid transform stacking context */}
-      <motion.button
-        onClick={() => router.push('/promptly')}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="fixed top-1/2 -translate-y-1/2 z-[9999]"
-        style={{ right: '-26px' }}
-        aria-label="Open Jarvis AI assistant"
-      >
-        <Image
-          src="/ChatBot-button.png"
-          alt="Jarvis AI"
-          width={130}
-          height={130}
-          priority
-        />
-      </motion.button>
+      <div className="fixed top-1/2 -translate-y-1/2 z-[9999]" style={{ right: '-26px' }}>
+        <motion.button
+          onClick={() => router.push('/promptly')}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          aria-label="Open Jarvis AI assistant"
+        >
+          <Image
+            src="/ChatBot-button.png"
+            alt="Jarvis AI"
+            width={130}
+            height={130}
+            priority
+          />
+        </motion.button>
+      </div>
     </>
   );
 }
